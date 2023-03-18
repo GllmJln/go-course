@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 type deck []string
@@ -37,4 +39,24 @@ func (d deck) toString() string {
 
 func (d deck) saveToFile(fileName string) error {
 	return os.WriteFile(fileName, []byte(d.toString()), 0666) // io util is deprecated, use os instead
+}
+
+func newDeckFromFile(fileName string) deck {
+	bs, err := os.ReadFile(fileName)
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(1)
+	}
+	return deck(strings.Split(string(bs), ","))
+}
+
+func (d deck) shuffle() {
+
+	s := rand.NewSource(time.Now().UnixNano()) // add some have pointed out, rand doesn't need a "manual" seed anymore
+	r := rand.New(s)
+
+	for i := range d {
+		n := r.Intn(len(d) - 1)
+		d[i], d[n] = d[n], d[i]
+	}
 }
