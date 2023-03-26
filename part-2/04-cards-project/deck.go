@@ -52,7 +52,7 @@ func newDeckFromFile(fileName string) deck {
 
 func (d deck) shuffle() {
 
-	s := rand.NewSource(time.Now().UnixNano()) // add some have pointed out, rand doesn't need a "manual" seed anymore
+	s := rand.NewSource(time.Now().UnixNano()) // as some have pointed out, rand doesn't need a "manual" seed anymore
 	r := rand.New(s)
 
 	for i := range d {
